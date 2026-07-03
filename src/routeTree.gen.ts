@@ -10,7 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReceitasRouteImport } from './routes/receitas'
+import { Route as PatrimonioRouteImport } from './routes/patrimonio'
+import { Route as MercadoPagoRouteImport } from './routes/mercado-pago'
+import { Route as InvestimentosRouteImport } from './routes/investimentos'
 import { Route as FluxoRouteImport } from './routes/fluxo'
+import { Route as FinanciamentosRouteImport } from './routes/financiamentos'
 import { Route as DespesasRouteImport } from './routes/despesas'
 import { Route as ContasRouteImport } from './routes/contas'
 import { Route as CartoesRouteImport } from './routes/cartoes'
@@ -21,9 +25,29 @@ const ReceitasRoute = ReceitasRouteImport.update({
   path: '/receitas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PatrimonioRoute = PatrimonioRouteImport.update({
+  id: '/patrimonio',
+  path: '/patrimonio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MercadoPagoRoute = MercadoPagoRouteImport.update({
+  id: '/mercado-pago',
+  path: '/mercado-pago',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvestimentosRoute = InvestimentosRouteImport.update({
+  id: '/investimentos',
+  path: '/investimentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FluxoRoute = FluxoRouteImport.update({
   id: '/fluxo',
   path: '/fluxo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanciamentosRoute = FinanciamentosRouteImport.update({
+  id: '/financiamentos',
+  path: '/financiamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DespesasRoute = DespesasRouteImport.update({
@@ -52,7 +76,11 @@ export interface FileRoutesByFullPath {
   '/cartoes': typeof CartoesRoute
   '/contas': typeof ContasRoute
   '/despesas': typeof DespesasRoute
+  '/financiamentos': typeof FinanciamentosRoute
   '/fluxo': typeof FluxoRoute
+  '/investimentos': typeof InvestimentosRoute
+  '/mercado-pago': typeof MercadoPagoRoute
+  '/patrimonio': typeof PatrimonioRoute
   '/receitas': typeof ReceitasRoute
 }
 export interface FileRoutesByTo {
@@ -60,7 +88,11 @@ export interface FileRoutesByTo {
   '/cartoes': typeof CartoesRoute
   '/contas': typeof ContasRoute
   '/despesas': typeof DespesasRoute
+  '/financiamentos': typeof FinanciamentosRoute
   '/fluxo': typeof FluxoRoute
+  '/investimentos': typeof InvestimentosRoute
+  '/mercado-pago': typeof MercadoPagoRoute
+  '/patrimonio': typeof PatrimonioRoute
   '/receitas': typeof ReceitasRoute
 }
 export interface FileRoutesById {
@@ -69,21 +101,49 @@ export interface FileRoutesById {
   '/cartoes': typeof CartoesRoute
   '/contas': typeof ContasRoute
   '/despesas': typeof DespesasRoute
+  '/financiamentos': typeof FinanciamentosRoute
   '/fluxo': typeof FluxoRoute
+  '/investimentos': typeof InvestimentosRoute
+  '/mercado-pago': typeof MercadoPagoRoute
+  '/patrimonio': typeof PatrimonioRoute
   '/receitas': typeof ReceitasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cartoes' | '/contas' | '/despesas' | '/fluxo' | '/receitas'
+  fullPaths:
+    | '/'
+    | '/cartoes'
+    | '/contas'
+    | '/despesas'
+    | '/financiamentos'
+    | '/fluxo'
+    | '/investimentos'
+    | '/mercado-pago'
+    | '/patrimonio'
+    | '/receitas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cartoes' | '/contas' | '/despesas' | '/fluxo' | '/receitas'
+  to:
+    | '/'
+    | '/cartoes'
+    | '/contas'
+    | '/despesas'
+    | '/financiamentos'
+    | '/fluxo'
+    | '/investimentos'
+    | '/mercado-pago'
+    | '/patrimonio'
+    | '/receitas'
   id:
     | '__root__'
     | '/'
     | '/cartoes'
     | '/contas'
     | '/despesas'
+    | '/financiamentos'
     | '/fluxo'
+    | '/investimentos'
+    | '/mercado-pago'
+    | '/patrimonio'
     | '/receitas'
   fileRoutesById: FileRoutesById
 }
@@ -92,7 +152,11 @@ export interface RootRouteChildren {
   CartoesRoute: typeof CartoesRoute
   ContasRoute: typeof ContasRoute
   DespesasRoute: typeof DespesasRoute
+  FinanciamentosRoute: typeof FinanciamentosRoute
   FluxoRoute: typeof FluxoRoute
+  InvestimentosRoute: typeof InvestimentosRoute
+  MercadoPagoRoute: typeof MercadoPagoRoute
+  PatrimonioRoute: typeof PatrimonioRoute
   ReceitasRoute: typeof ReceitasRoute
 }
 
@@ -105,11 +169,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReceitasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/patrimonio': {
+      id: '/patrimonio'
+      path: '/patrimonio'
+      fullPath: '/patrimonio'
+      preLoaderRoute: typeof PatrimonioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mercado-pago': {
+      id: '/mercado-pago'
+      path: '/mercado-pago'
+      fullPath: '/mercado-pago'
+      preLoaderRoute: typeof MercadoPagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/investimentos': {
+      id: '/investimentos'
+      path: '/investimentos'
+      fullPath: '/investimentos'
+      preLoaderRoute: typeof InvestimentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fluxo': {
       id: '/fluxo'
       path: '/fluxo'
       fullPath: '/fluxo'
       preLoaderRoute: typeof FluxoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financiamentos': {
+      id: '/financiamentos'
+      path: '/financiamentos'
+      fullPath: '/financiamentos'
+      preLoaderRoute: typeof FinanciamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/despesas': {
@@ -148,7 +240,11 @@ const rootRouteChildren: RootRouteChildren = {
   CartoesRoute: CartoesRoute,
   ContasRoute: ContasRoute,
   DespesasRoute: DespesasRoute,
+  FinanciamentosRoute: FinanciamentosRoute,
   FluxoRoute: FluxoRoute,
+  InvestimentosRoute: InvestimentosRoute,
+  MercadoPagoRoute: MercadoPagoRoute,
+  PatrimonioRoute: PatrimonioRoute,
   ReceitasRoute: ReceitasRoute,
 }
 export const routeTree = rootRouteImport
