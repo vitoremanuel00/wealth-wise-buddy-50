@@ -11,22 +11,24 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          O endereço acessado não existe no ManyMoney.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Ir para o Dashboard
           </Link>
         </div>
       </div>
@@ -44,11 +46,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">Erro ao carregar</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Algo deu errado. Tente novamente ou volte ao Dashboard.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -58,13 +58,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Tentar novamente
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Dashboard
           </a>
         </div>
       </div>
@@ -77,20 +77,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ManyMoney — Gestão Financeira e Patrimonial" },
+      {
+        name: "description",
+        content:
+          "ManyMoney: sistema pessoal de gestão financeira e patrimonial. Controle fluxo de caixa, investimentos, financiamentos, metas e patrimônio líquido.",
+      },
+      { property: "og:title", content: "ManyMoney — Gestão Financeira e Patrimonial" },
+      {
+        property: "og:description",
+        content:
+          "Sistema completo de gestão financeira e patrimonial pessoal, com dashboard, investimentos, metas e mais.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -102,11 +105,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="dark bg-background text-foreground">
         {children}
         <Scripts />
       </body>
@@ -119,8 +122,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen w-full bg-background">
+        <AppSidebar />
+        <main className="flex-1 min-w-0">
+          <div className="mx-auto max-w-7xl px-5 md:px-8 py-8">
+            <Outlet />
+          </div>
+        </main>
+        <Toaster theme="dark" richColors position="top-right" />
+      </div>
     </QueryClientProvider>
   );
 }
