@@ -9,17 +9,29 @@ export type TransactionType =
 
 export type TransactionStatus = "paid" | "pending" | "cancelled";
 
+export type PaymentMethod =
+  | "pix"
+  | "debito"
+  | "dinheiro"
+  | "transferencia"
+  | "credito";
+
 export interface Transaction {
   id: UUID;
   description: string;
   category: string;
-  accountId: UUID;
+  accountId?: UUID;
   type: TransactionType;
   amount: number;
   date: string; // ISO
   notes?: string;
   status: TransactionStatus;
   createdAt: string;
+  paymentMethod?: PaymentMethod;
+  /** Credit card link (payment method = "credito") */
+  cardId?: UUID;
+  installments?: number;
+  purchaseDate?: string;
 }
 
 export interface Account {
