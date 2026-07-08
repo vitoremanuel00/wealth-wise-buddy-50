@@ -17,6 +17,13 @@ export const Route = createFileRoute("/configuracoes")({
   component: ConfigPage,
 });
 
+const categoryTypeLabel: Record<Category["type"], string> = {
+  income: "receita",
+  expense: "despesa",
+  investment: "investimento",
+  opening_balance: "saldo inicial",
+};
+
 function ConfigPage() {
   const { categories, addCategory, deleteCategory, currency, reset } = useStore();
   const [form, setForm] = useState<Omit<Category, "id">>({ name: "", type: "expense", color: "#ef4444" });
