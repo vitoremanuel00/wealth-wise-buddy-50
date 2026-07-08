@@ -35,6 +35,8 @@ function ConfigPage() {
               <SelectContent>
                 <SelectItem value="income">Receita</SelectItem>
                 <SelectItem value="expense">Despesa</SelectItem>
+                <SelectItem value="investment">Investimento</SelectItem>
+                <SelectItem value="opening_balance">Saldo Inicial</SelectItem>
               </SelectContent>
             </Select>
             <Button onClick={() => { if (!form.name) return; addCategory(form); toast.success("Categoria criada"); setForm({ name: "", type: "expense", color: "#ef4444" }); }} className="gap-2">
@@ -47,7 +49,7 @@ function ConfigPage() {
                 <span className="flex items-center gap-2">
                   <span className="size-3 rounded-full" style={{ background: c.color }} />
                   {c.name}
-                  <span className="text-xs text-muted-foreground">({c.type === "income" ? "receita" : "despesa"})</span>
+                  <span className="text-xs text-muted-foreground">({categoryTypeLabel[c.type]})</span>
                 </span>
                 <Button size="icon" variant="ghost" onClick={() => deleteCategory(c.id)}>
                   <Trash2 className="size-4" />
