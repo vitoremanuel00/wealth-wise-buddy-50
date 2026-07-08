@@ -88,6 +88,9 @@ const seedCategories: Category[] = [
   { id: uid(), name: "Moradia", type: "expense", color: "#3b82f6" },
   { id: uid(), name: "Lazer", type: "expense", color: "#ec4899" },
   { id: uid(), name: "Saúde", type: "expense", color: "#14b8a6" },
+  { id: uid(), name: "Renda Fixa", type: "investment", color: "#0ea5e9" },
+  { id: uid(), name: "Renda Variável", type: "investment", color: "#a855f7" },
+  { id: uid(), name: "Reserva Acumulada", type: "opening_balance", color: "#64748b" },
 ];
 
 const seedAccounts: Account[] = [

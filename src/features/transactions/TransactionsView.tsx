@@ -34,9 +34,16 @@ const schema = z
     description: z.string().min(1, "Obrigatório"),
     amount: z.coerce.number().positive("Valor > 0"),
     date: z.string().min(1),
-    type: z.enum(["income", "expense", "transfer", "investment", "amortization"]),
+    type: z.enum([
+      "income",
+      "expense",
+      "transfer",
+      "investment",
+      "amortization",
+      "opening_balance",
+    ]),
     status: z.enum(["paid", "pending", "cancelled"]),
-    category: z.string().min(1),
+    category: z.string().optional(),
     accountId: z.string().optional(),
     paymentMethod: z
       .enum(["pix", "debito", "dinheiro", "transferencia", "credito"])
@@ -47,6 +54,9 @@ const schema = z
     notes: z.string().optional(),
   })
   .superRefine((v, ctx) => {
+    if (v.type !== "transfer" && !v.category) {
+      ctx.addIssue({ code: "custom", path: ["category"], message: "Selecione a categoria" });
+    }
     if (v.type === "expense" && !v.paymentMethod) {
       ctx.addIssue({ code: "custom", path: ["paymentMethod"], message: "Selecione a forma" });
     }
@@ -56,7 +66,7 @@ const schema = z
       if (!v.purchaseDate)
         ctx.addIssue({ code: "custom", path: ["purchaseDate"], message: "Data obrigatória" });
     } else if (v.type !== "income" && v.type !== "transfer") {
-      // non-credit outflows still need an account
+      // non-credit outflows / opening balances still need an account
       if (!v.accountId)
         ctx.addIssue({ code: "custom", path: ["accountId"], message: "Selecione a conta" });
     }
@@ -70,6 +80,7 @@ const typeLabel: Record<TransactionType, string> = {
   transfer: "Transferência",
   investment: "Investimento",
   amortization: "Amortização",
+  opening_balance: "Saldo Inicial",
 };
 
 const statusLabel: Record<TransactionStatus, string> = {
@@ -141,11 +152,11 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
 
   const type = form.watch("type");
   const categoryOptions =
-    type === "income"
-      ? categories.filter((c) => c.type === "income")
-      : type === "expense"
-        ? categories.filter((c) => c.type === "expense")
-        : categories;
+    type === "transfer"
+      ? []
+      : type === "opening_balance"
+        ? categories.filter((c) => c.type === "opening_balance")
+        : categories.filter((c) => c.type === type);
 
   return (
     <div>
@@ -190,7 +201,11 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                 <Label>Tipo</Label>
                 <Select
                   value={form.watch("type")}
-                  onValueChange={(v) => form.setValue("type", v as TransactionType)}
+                  onValueChange={(v) => {
+                    form.setValue("type", v as TransactionType);
+                    form.setValue("category", "");
+                    if (v !== "expense") form.setValue("paymentMethod", undefined);
+                  }}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -214,20 +229,28 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label>Categoria</Label>
-                <Select
-                  value={form.watch("category")}
-                  onValueChange={(v) => form.setValue("category", v)}
-                >
-                  <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
-                  <SelectContent>
-                    {categoryOptions.map((c) => (
-                      <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {type !== "transfer" && (
+                <div>
+                  <Label>Categoria</Label>
+                  <Select
+                    value={form.watch("category") ?? ""}
+                    onValueChange={(v) => form.setValue("category", v)}
+                  >
+                    <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
+                    <SelectContent>
+                      {categoryOptions.length === 0 ? (
+                        <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                          Nenhuma categoria — cadastre em <b>Configurações</b>
+                        </div>
+                      ) : (
+                        categoryOptions.map((c) => (
+                          <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               {type === "expense" && (
                 <div>
                   <Label>Forma de pagamento</Label>

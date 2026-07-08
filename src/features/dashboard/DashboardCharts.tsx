@@ -88,7 +88,7 @@ export function ExpensesPieChart() {
     const map = new Map<string, number>();
     transactions
       .filter((t) => t.status === "paid" && t.type === "expense")
-      .forEach((t) => map.set(t.category, (map.get(t.category) ?? 0) + t.amount));
+      .forEach((t) => { const k = t.category ?? "Sem categoria"; map.set(k, (map.get(k) ?? 0) + t.amount); });
     return Array.from(map, ([name, value]) => ({ name, value }));
   }, [transactions]);
 
@@ -114,7 +114,7 @@ export function IncomesBarChart() {
     const map = new Map<string, number>();
     transactions
       .filter((t) => t.status === "paid" && t.type === "income")
-      .forEach((t) => map.set(t.category, (map.get(t.category) ?? 0) + t.amount));
+      .forEach((t) => { const k = t.category ?? "Sem categoria"; map.set(k, (map.get(k) ?? 0) + t.amount); });
     return Array.from(map, ([name, value]) => ({ name, value }));
   }, [transactions]);
 

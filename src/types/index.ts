@@ -5,7 +5,8 @@ export type TransactionType =
   | "expense"
   | "transfer"
   | "investment"
-  | "amortization";
+  | "amortization"
+  | "opening_balance";
 
 export type TransactionStatus = "paid" | "pending" | "cancelled";
 
@@ -19,7 +20,7 @@ export type PaymentMethod =
 export interface Transaction {
   id: UUID;
   description: string;
-  category: string;
+  category?: string;
   accountId?: UUID;
   type: TransactionType;
   amount: number;
@@ -120,6 +121,6 @@ export interface MercadoPago {
 export interface Category {
   id: UUID;
   name: string;
-  type: "income" | "expense";
+  type: "income" | "expense" | "investment" | "opening_balance";
   color: string;
 }
