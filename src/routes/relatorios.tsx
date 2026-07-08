@@ -19,9 +19,9 @@ function RelatoriosPage() {
   const exportCSV = () => {
     const rows = [
       ["Data", "Descrição", "Categoria", "Tipo", "Status", "Valor"],
-      ...transactions.map((t) => [t.date, t.description, t.category, t.type, t.status, String(t.amount)]),
+      ...transactions.map((t) => [t.date, t.description, t.category ?? "", t.type, t.status, String(t.amount)]),
     ];
-    const csv = rows.map((r) => r.map((c) => `"${c.replace?.(/"/g, '""') ?? c}"`).join(",")).join("\n");
+    const csv = rows.map((r) => r.map((c) => `"${(c ?? "").replace?.(/"/g, '""') ?? c}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
