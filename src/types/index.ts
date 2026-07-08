@@ -5,7 +5,8 @@ export type TransactionType =
   | "expense"
   | "transfer"
   | "investment"
-  | "amortization";
+  | "amortization"
+  | "opening_balance";
 
 export type TransactionStatus = "paid" | "pending" | "cancelled";
 
