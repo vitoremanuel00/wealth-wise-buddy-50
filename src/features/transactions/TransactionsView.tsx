@@ -152,11 +152,11 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
 
   const type = form.watch("type");
   const categoryOptions =
-    type === "income"
-      ? categories.filter((c) => c.type === "income")
-      : type === "expense"
-        ? categories.filter((c) => c.type === "expense")
-        : categories;
+    type === "transfer"
+      ? []
+      : type === "opening_balance"
+        ? categories.filter((c) => c.type === "opening_balance")
+        : categories.filter((c) => c.type === type);
 
   return (
     <div>
