@@ -73,7 +73,7 @@ export function expandCardPurchase(
     out.push({
       transactionId: t.id,
       description: t.description,
-      category: t.category,
+      category: t.category ?? "",
       purchaseDate: t.purchaseDate ?? t.date,
       installmentIndex: i + 1,
       installmentsTotal: total,
