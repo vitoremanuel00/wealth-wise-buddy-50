@@ -20,7 +20,7 @@ export type PaymentMethod =
 export interface Transaction {
   id: UUID;
   description: string;
-  category: string;
+  category?: string;
   accountId?: UUID;
   type: TransactionType;
   amount: number;
