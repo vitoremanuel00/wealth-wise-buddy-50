@@ -27,13 +27,13 @@ export function useFinance() {
       .filter((t) => t.type === "amortization")
       .reduce((s, t) => s + t.amount, 0);
 
-    // Account balances = initial + income - expense (paid only), net transfers
+    // Account balances = initial + income + opening_balance - expense (paid only)
     const accountBalance = (accountId: string) => {
       const init = store.accounts.find((a) => a.id === accountId)?.initialBalance ?? 0;
       const delta = paid
         .filter((t) => t.accountId === accountId)
         .reduce((s, t) => {
-          if (t.type === "income") return s + t.amount;
+          if (t.type === "income" || t.type === "opening_balance") return s + t.amount;
           if (t.type === "expense" || t.type === "investment" || t.type === "amortization")
             return s - t.amount;
           return s;
