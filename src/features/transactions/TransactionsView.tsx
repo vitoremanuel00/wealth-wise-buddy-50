@@ -26,19 +26,41 @@ import {
 } from "@/components/ui/dialog";
 import { useStore } from "@/services/store";
 import { brl, dateBR } from "@/utils/format";
-import type { TransactionStatus, TransactionType } from "@/types";
+import type { PaymentMethod, TransactionStatus, TransactionType } from "@/types";
 import { cn } from "@/lib/utils";
 
-const schema = z.object({
-  description: z.string().min(1, "Obrigatório"),
-  amount: z.coerce.number().positive("Valor > 0"),
-  date: z.string().min(1),
-  type: z.enum(["income", "expense", "transfer", "investment", "amortization"]),
-  status: z.enum(["paid", "pending", "cancelled"]),
-  category: z.string().min(1),
-  accountId: z.string().min(1),
-  notes: z.string().optional(),
-});
+const schema = z
+  .object({
+    description: z.string().min(1, "Obrigatório"),
+    amount: z.coerce.number().positive("Valor > 0"),
+    date: z.string().min(1),
+    type: z.enum(["income", "expense", "transfer", "investment", "amortization"]),
+    status: z.enum(["paid", "pending", "cancelled"]),
+    category: z.string().min(1),
+    accountId: z.string().optional(),
+    paymentMethod: z
+      .enum(["pix", "debito", "dinheiro", "transferencia", "credito"])
+      .optional(),
+    cardId: z.string().optional(),
+    installments: z.coerce.number().int().min(1).max(48).optional(),
+    purchaseDate: z.string().optional(),
+    notes: z.string().optional(),
+  })
+  .superRefine((v, ctx) => {
+    if (v.type === "expense" && !v.paymentMethod) {
+      ctx.addIssue({ code: "custom", path: ["paymentMethod"], message: "Selecione a forma" });
+    }
+    if (v.paymentMethod === "credito") {
+      if (!v.cardId)
+        ctx.addIssue({ code: "custom", path: ["cardId"], message: "Selecione o cartão" });
+      if (!v.purchaseDate)
+        ctx.addIssue({ code: "custom", path: ["purchaseDate"], message: "Data obrigatória" });
+    } else if (v.type !== "income" && v.type !== "transfer") {
+      // non-credit outflows still need an account
+      if (!v.accountId)
+        ctx.addIssue({ code: "custom", path: ["accountId"], message: "Selecione a conta" });
+    }
+  });
 
 type FormValues = z.infer<typeof schema>;
 
@@ -56,6 +78,14 @@ const statusLabel: Record<TransactionStatus, string> = {
   cancelled: "Cancelado",
 };
 
+const paymentLabel: Record<PaymentMethod, string> = {
+  pix: "PIX",
+  debito: "Débito",
+  dinheiro: "Dinheiro",
+  transferencia: "Transferência",
+  credito: "Crédito",
+};
+
 interface Props {
   defaultType?: TransactionType;
   title?: string;
@@ -64,7 +94,7 @@ interface Props {
 }
 
 export function TransactionsView({ defaultType, title, subtitle, filterType }: Props) {
-  const { transactions, accounts, categories, addTransaction, deleteTransaction, updateTransaction } =
+  const { transactions, accounts, categories, cards, addTransaction, deleteTransaction, updateTransaction } =
     useStore();
   const [open, setOpen] = useState(false);
 
@@ -80,12 +110,25 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
       status: "paid",
       category: categories[0]?.name ?? "",
       accountId: accounts[0]?.id ?? "",
+      paymentMethod: (defaultType ?? "expense") === "expense" ? "pix" : undefined,
+      cardId: undefined,
+      installments: 1,
+      purchaseDate: new Date().toISOString().slice(0, 10),
       notes: "",
     },
   });
 
   const onSubmit = (values: FormValues) => {
-    addTransaction(values);
+    const payload = { ...values };
+    if (payload.paymentMethod === "credito") {
+      // Credit purchases don't hit an account — the invoice payment will.
+      payload.accountId = undefined;
+    } else {
+      payload.cardId = undefined;
+      payload.installments = undefined;
+      payload.purchaseDate = undefined;
+    }
+    addTransaction(payload);
     toast.success("Movimentação registrada");
     form.reset({
       ...values,
