@@ -121,6 +121,6 @@ export interface MercadoPago {
 export interface Category {
   id: UUID;
   name: string;
-  type: "income" | "expense";
+  type: "income" | "expense" | "investment" | "opening_balance";
   color: string;
 }
