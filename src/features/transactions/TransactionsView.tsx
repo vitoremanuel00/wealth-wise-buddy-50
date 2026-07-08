@@ -201,7 +201,11 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                 <Label>Tipo</Label>
                 <Select
                   value={form.watch("type")}
-                  onValueChange={(v) => form.setValue("type", v as TransactionType)}
+                  onValueChange={(v) => {
+                    form.setValue("type", v as TransactionType);
+                    form.setValue("category", "");
+                    if (v !== "expense") form.setValue("paymentMethod", undefined);
+                  }}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -225,20 +229,28 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label>Categoria</Label>
-                <Select
-                  value={form.watch("category")}
-                  onValueChange={(v) => form.setValue("category", v)}
-                >
-                  <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
-                  <SelectContent>
-                    {categoryOptions.map((c) => (
-                      <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {type !== "transfer" && (
+                <div>
+                  <Label>Categoria</Label>
+                  <Select
+                    value={form.watch("category") ?? ""}
+                    onValueChange={(v) => form.setValue("category", v)}
+                  >
+                    <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
+                    <SelectContent>
+                      {categoryOptions.length === 0 ? (
+                        <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                          Nenhuma categoria — cadastre em <b>Configurações</b>
+                        </div>
+                      ) : (
+                        categoryOptions.map((c) => (
+                          <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               {type === "expense" && (
                 <div>
                   <Label>Forma de pagamento</Label>
