@@ -228,20 +228,76 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label>Conta</Label>
-                <Select
-                  value={form.watch("accountId")}
-                  onValueChange={(v) => form.setValue("accountId", v)}
-                >
-                  <SelectTrigger><SelectValue placeholder="Conta" /></SelectTrigger>
-                  <SelectContent>
-                    {accounts.map((a) => (
-                      <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {type === "expense" && (
+                <div>
+                  <Label>Forma de pagamento</Label>
+                  <Select
+                    value={form.watch("paymentMethod") ?? ""}
+                    onValueChange={(v) => form.setValue("paymentMethod", v as PaymentMethod)}
+                  >
+                    <SelectTrigger><SelectValue placeholder="Forma" /></SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(paymentLabel).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>{v}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {form.watch("paymentMethod") !== "credito" && (
+                <div>
+                  <Label>Conta</Label>
+                  <Select
+                    value={form.watch("accountId") ?? ""}
+                    onValueChange={(v) => form.setValue("accountId", v)}
+                  >
+                    <SelectTrigger><SelectValue placeholder="Conta" /></SelectTrigger>
+                    <SelectContent>
+                      {accounts.map((a) => (
+                        <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {form.watch("paymentMethod") === "credito" && (
+                <>
+                  <div className="col-span-2">
+                    <Label>Cartão</Label>
+                    <Select
+                      value={form.watch("cardId") ?? ""}
+                      onValueChange={(v) => form.setValue("cardId", v)}
+                    >
+                      <SelectTrigger><SelectValue placeholder="Selecione o cartão" /></SelectTrigger>
+                      <SelectContent>
+                        {cards.map((c) => (
+                          <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                        ))}
+                        {cards.length === 0 && (
+                          <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                            Cadastre um cartão em <b>Cartões</b>
+                          </div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Parcelas</Label>
+                    <Input
+                      type="number"
+                      min={1}
+                      max={48}
+                      {...form.register("installments")}
+                    />
+                  </div>
+                  <div>
+                    <Label>Data da compra</Label>
+                    <Input type="date" {...form.register("purchaseDate")} />
+                  </div>
+                </>
+              )}
               <div className="col-span-2">
                 <Label>Observação</Label>
                 <Textarea rows={2} {...form.register("notes")} />
