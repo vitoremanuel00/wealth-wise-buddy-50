@@ -1,11 +1,8 @@
 /**
  * Credit card computation helpers.
- *
- * The system does NOT store manual "invoice" transactions.
- * Every purchase is a single expense transaction linked to a card
- * via `cardId` + `installments` + `purchaseDate`. Invoices are
- * derived on the fly by expanding each purchase into its installments
- * and grouping them by billing cycle.
+ * Purchases stored as expense + paymentMethod=credito are expanded
+ * into per-cycle installments; invoices are grouped by billing cycle.
+ * Payment is a separate `invoice_payment` transaction linked by invoiceKey.
  */
 import type { CreditCard, Transaction } from "@/types";
 
@@ -14,19 +11,22 @@ export interface CardInstallment {
   description: string;
   category: string;
   purchaseDate: string;
-  installmentIndex: number; // 1-based
+  installmentIndex: number;
   installmentsTotal: number;
   amount: number;
-  invoiceKey: string; // YYYY-MM of invoice due date
-  invoiceDueDate: string; // ISO date
+  invoiceKey: string;
+  invoiceDueDate: string;
 }
 
+export type InvoiceStatus = "open" | "closed" | "future" | "paid";
+
 export interface CardInvoice {
-  key: string; // YYYY-MM
-  dueDate: string; // ISO
+  key: string;
+  dueDate: string;
   total: number;
+  paid: number;
   items: CardInstallment[];
-  status: "open" | "closed" | "future";
+  status: InvoiceStatus;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -36,13 +36,10 @@ const clampDay = (year: number, monthIdx: number, day: number) => {
   return Math.min(day, last);
 };
 
-/** Determine invoice year/month index for a purchase given the card closing day. */
 function invoiceMonthFor(purchaseISO: string, closingDay: number) {
   const d = new Date(purchaseISO);
   let y = d.getFullYear();
-  let m = d.getMonth(); // 0..11
-  // Purchases up to and including closingDay land in the same month's invoice;
-  // after the closing day they roll to the next month's invoice.
+  let m = d.getMonth();
   if (d.getDate() > closingDay) {
     m += 1;
     if (m > 11) {
@@ -85,7 +82,6 @@ export function expandCardPurchase(
   return out;
 }
 
-/** All installments belonging to a card, sorted by invoice due date. */
 export function cardInstallments(
   card: CreditCard,
   transactions: Transaction[],
@@ -95,13 +91,30 @@ export function cardInstallments(
       (t) =>
         t.paymentMethod === "credito" &&
         t.cardId === card.id &&
+        t.type === "expense" &&
         t.status !== "cancelled",
     )
     .flatMap((t) => expandCardPurchase(t, card))
     .sort((a, b) => a.invoiceDueDate.localeCompare(b.invoiceDueDate));
 }
 
-/** Group installments into invoices by billing cycle. */
+/** Sum of `invoice_payment` transactions applied to a given (card, invoiceKey). */
+export function invoicePayments(
+  card: CreditCard,
+  transactions: Transaction[],
+  invoiceKey: string,
+) {
+  return transactions
+    .filter(
+      (t) =>
+        t.type === "invoice_payment" &&
+        t.cardId === card.id &&
+        t.invoiceKey === invoiceKey &&
+        t.status !== "cancelled",
+    )
+    .reduce((s, t) => s + t.amount, 0);
+}
+
 export function cardInvoices(
   card: CreditCard,
   transactions: Transaction[],
@@ -124,21 +137,24 @@ export function cardInvoices(
     .map(([key, list]) => {
       const dueDate = list[0].invoiceDueDate;
       const total = list.reduce((s, i) => s + i.amount, 0);
-      const status: CardInvoice["status"] =
-        key === currentInvoiceKey ? "open" : key < currentInvoiceKey ? "closed" : "future";
-      return { key, dueDate, total, items: list, status };
+      const paid = invoicePayments(card, transactions, key);
+      let status: InvoiceStatus;
+      if (paid >= total - 0.005) status = "paid";
+      else if (key === currentInvoiceKey) status = "open";
+      else if (key < currentInvoiceKey) status = "closed";
+      else status = "future";
+      return { key, dueDate, total, paid, items: list, status };
     });
 }
 
-/** Sum of installments not yet paid off (open + future invoices). */
 export function cardUsedLimit(
   card: CreditCard,
   transactions: Transaction[],
   today: Date = new Date(),
 ): number {
   return cardInvoices(card, transactions, today)
-    .filter((inv) => inv.status !== "closed")
-    .reduce((s, inv) => s + inv.total, 0);
+    .filter((inv) => inv.status !== "closed" && inv.status !== "paid")
+    .reduce((s, inv) => s + Math.max(0, inv.total - inv.paid), 0);
 }
 
 export function cardAvailableLimit(

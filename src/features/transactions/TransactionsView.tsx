@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { Plus, Trash2, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Clock, XCircle, Repeat } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -29,19 +30,24 @@ import { brl, dateBR } from "@/utils/format";
 import type { PaymentMethod, TransactionStatus, TransactionType } from "@/types";
 import { cn } from "@/lib/utils";
 
+// Types available in the "Nova movimentação" form.
+// invoice_payment is created only by the "Pagar fatura" action.
+const FORM_TYPES = [
+  "income",
+  "expense",
+  "transfer",
+  "investment",
+  "amortization",
+  "opening_balance",
+] as const;
+type FormType = (typeof FORM_TYPES)[number];
+
 const schema = z
   .object({
     description: z.string().min(1, "Obrigatório"),
     amount: z.coerce.number().positive("Valor > 0"),
     date: z.string().min(1),
-    type: z.enum([
-      "income",
-      "expense",
-      "transfer",
-      "investment",
-      "amortization",
-      "opening_balance",
-    ]),
+    type: z.enum(FORM_TYPES),
     status: z.enum(["paid", "pending", "cancelled"]),
     category: z.string().optional(),
     accountId: z.string().optional(),
@@ -52,6 +58,8 @@ const schema = z
     installments: z.coerce.number().int().min(1).max(48).optional(),
     purchaseDate: z.string().optional(),
     notes: z.string().optional(),
+    recurring: z.boolean().optional(),
+    recurringMonths: z.coerce.number().int().min(2).max(48).optional(),
   })
   .superRefine((v, ctx) => {
     if (v.type !== "transfer" && !v.category) {
@@ -66,9 +74,15 @@ const schema = z
       if (!v.purchaseDate)
         ctx.addIssue({ code: "custom", path: ["purchaseDate"], message: "Data obrigatória" });
     } else if (v.type !== "income" && v.type !== "transfer") {
-      // non-credit outflows / opening balances still need an account
       if (!v.accountId)
         ctx.addIssue({ code: "custom", path: ["accountId"], message: "Selecione a conta" });
+    }
+    if (v.recurring && (!v.recurringMonths || v.recurringMonths < 2)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["recurringMonths"],
+        message: "Informe 2 ou mais meses",
+      });
     }
   });
 
@@ -81,6 +95,7 @@ const typeLabel: Record<TransactionType, string> = {
   investment: "Investimento",
   amortization: "Amortização",
   opening_balance: "Saldo Inicial",
+  invoice_payment: "Pgto. de Fatura",
 };
 
 const statusLabel: Record<TransactionStatus, string> = {
@@ -98,7 +113,7 @@ const paymentLabel: Record<PaymentMethod, string> = {
 };
 
 interface Props {
-  defaultType?: TransactionType;
+  defaultType?: FormType;
   title?: string;
   subtitle?: string;
   filterType?: TransactionType;
@@ -119,33 +134,46 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
       date: new Date().toISOString().slice(0, 10),
       type: defaultType ?? "expense",
       status: "paid",
-      category: categories[0]?.name ?? "",
+      category: "",
       accountId: accounts[0]?.id ?? "",
       paymentMethod: (defaultType ?? "expense") === "expense" ? "pix" : undefined,
       cardId: undefined,
       installments: 1,
       purchaseDate: new Date().toISOString().slice(0, 10),
       notes: "",
+      recurring: false,
+      recurringMonths: 12,
     },
   });
 
   const onSubmit = (values: FormValues) => {
-    const payload = { ...values };
+    const {
+      recurring,
+      recurringMonths,
+      ...rest
+    } = values;
+    const payload = { ...rest };
     if (payload.paymentMethod === "credito") {
-      // Credit purchases don't hit an account — the invoice payment will.
       payload.accountId = undefined;
     } else {
       payload.cardId = undefined;
       payload.installments = undefined;
       payload.purchaseDate = undefined;
     }
-    addTransaction(payload);
-    toast.success("Movimentação registrada");
+    addTransaction(payload, {
+      recurringMonths: recurring ? recurringMonths ?? 12 : undefined,
+    });
+    toast.success(
+      recurring
+        ? `Recorrência criada (${recurringMonths ?? 12}x)`
+        : "Movimentação registrada",
+    );
     form.reset({
       ...values,
       description: "",
       amount: 0,
       notes: "",
+      recurring: false,
     });
     setOpen(false);
   };
@@ -202,15 +230,15 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                 <Select
                   value={form.watch("type")}
                   onValueChange={(v) => {
-                    form.setValue("type", v as TransactionType);
+                    form.setValue("type", v as FormType);
                     form.setValue("category", "");
                     if (v !== "expense") form.setValue("paymentMethod", undefined);
                   }}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {Object.entries(typeLabel).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>{v}</SelectItem>
+                    {FORM_TYPES.map((k) => (
+                      <SelectItem key={k} value={k}>{typeLabel[k]}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -321,6 +349,39 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                   </div>
                 </>
               )}
+
+              <div className="col-span-2 rounded-lg border border-border bg-muted/20 p-3">
+                <div className="flex items-center gap-3">
+                  <Checkbox
+                    id="recurring"
+                    checked={form.watch("recurring") ?? false}
+                    onCheckedChange={(v) => form.setValue("recurring", Boolean(v))}
+                  />
+                  <Label htmlFor="recurring" className="flex items-center gap-2 cursor-pointer">
+                    <Repeat className="size-4" /> Repetir mensalmente
+                  </Label>
+                  {form.watch("recurring") && (
+                    <div className="ml-auto flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">por</span>
+                      <Input
+                        type="number"
+                        min={2}
+                        max={48}
+                        className="w-20 h-8"
+                        {...form.register("recurringMonths")}
+                      />
+                      <span className="text-muted-foreground">meses</span>
+                    </div>
+                  )}
+                </div>
+                {form.watch("recurring") && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Serão gerados {form.watch("recurringMonths") ?? 12} lançamentos
+                    (o primeiro conforme o status escolhido, os demais como pendentes).
+                  </p>
+                )}
+              </div>
+
               <div className="col-span-2">
                 <Label>Observação</Label>
                 <Textarea rows={2} {...form.register("notes")} />
@@ -358,9 +419,27 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
             <tbody>
               {list.map((t) => {
                 const account = accounts.find((a) => a.id === t.accountId);
+                const isRecurring = !!t.recurrence;
+                const isChild = !!t.recurrence?.parentId;
                 return (
                   <tr key={t.id} className="border-b border-border/60 hover:bg-muted/20">
-                    <td className="p-3">{t.description}</td>
+                    <td className="p-3">
+                      <div className="flex items-center gap-2">
+                        {t.description}
+                        {isRecurring && (
+                          <span
+                            title={
+                              isChild
+                                ? "Lançamento recorrente"
+                                : `Recorrência ${t.recurrence?.installments}x`
+                            }
+                            className="text-muted-foreground"
+                          >
+                            <Repeat className="size-3" />
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="p-3 text-muted-foreground">{t.category}</td>
                     <td className="p-3 text-muted-foreground">{account?.name ?? "—"}</td>
                     <td className="p-3 text-muted-foreground">{typeLabel[t.type]}</td>
@@ -369,10 +448,10 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                       className={cn(
                         "p-3 text-right number-tabular font-medium",
                         t.type === "income" && "text-emerald-400",
-                        t.type === "expense" && "text-red-400",
+                        (t.type === "expense" || t.type === "invoice_payment") && "text-red-400",
                       )}
                     >
-                      {t.type === "expense" ? "-" : "+"}
+                      {t.type === "income" || t.type === "opening_balance" ? "+" : "-"}
                       {brl(t.amount)}
                     </td>
                     <td className="p-3">
@@ -401,7 +480,11 @@ export function TransactionsView({ defaultType, title, subtitle, filterType }: P
                         variant="ghost"
                         onClick={() => {
                           deleteTransaction(t.id);
-                          toast.success("Removido");
+                          toast.success(
+                            isRecurring && !isChild
+                              ? "Recorrência removida"
+                              : "Removido",
+                          );
                         }}
                       >
                         <Trash2 className="size-4" />

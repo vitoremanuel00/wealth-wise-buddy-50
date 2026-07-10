@@ -6,7 +6,8 @@ export type TransactionType =
   | "transfer"
   | "investment"
   | "amortization"
-  | "opening_balance";
+  | "opening_balance"
+  | "invoice_payment";
 
 export type TransactionStatus = "paid" | "pending" | "cancelled";
 
@@ -16,6 +17,12 @@ export type PaymentMethod =
   | "dinheiro"
   | "transferencia"
   | "credito";
+
+export interface TransactionRecurrence {
+  frequency: "monthly";
+  installments: number; // total occurrences (including the original)
+  parentId?: UUID; // set on children, undefined on the original
+}
 
 export interface Transaction {
   id: UUID;
@@ -33,6 +40,12 @@ export interface Transaction {
   cardId?: UUID;
   installments?: number;
   purchaseDate?: string;
+  /** Invoice payment link (type = "invoice_payment") */
+  invoiceKey?: string; // YYYY-MM
+  /** Financing link (parcela / amortização) */
+  financingId?: UUID;
+  /** Recurring transaction metadata */
+  recurrence?: TransactionRecurrence;
 }
 
 export interface Account {
@@ -63,6 +76,15 @@ export interface Investment {
   dividends: number;
 }
 
+export interface FinancingEvent {
+  id: UUID;
+  date: string;
+  type: "payment" | "amortization";
+  amount: number;
+  accountId?: UUID;
+  note?: string;
+}
+
 export interface Financing {
   id: UUID;
   bank: string;
@@ -73,6 +95,8 @@ export interface Financing {
   months: number;
   installment: number;
   amortized: number;
+  paidInstallments: number;
+  history: FinancingEvent[];
 }
 
 export interface Goal {

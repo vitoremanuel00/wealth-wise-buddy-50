@@ -15,8 +15,15 @@ export function useFinance() {
       .filter((t) => t.type === "income" && monthKey(t.date) === currentMonth)
       .reduce((s, t) => s + t.amount, 0);
 
+    // Despesa "efetiva" no mês = despesas no débito/pix/etc.
+    // NÃO conta compras no crédito (essas só saem do caixa via invoice_payment).
     const expenseMonth = paid
-      .filter((t) => t.type === "expense" && monthKey(t.date) === currentMonth)
+      .filter(
+        (t) =>
+          monthKey(t.date) === currentMonth &&
+          ((t.type === "expense" && t.paymentMethod !== "credito") ||
+            t.type === "invoice_payment"),
+      )
       .reduce((s, t) => s + t.amount, 0);
 
     const investedTotal = paid
@@ -27,14 +34,23 @@ export function useFinance() {
       .filter((t) => t.type === "amortization")
       .reduce((s, t) => s + t.amount, 0);
 
-    // Account balances = initial + income + opening_balance - expense (paid only)
+    // Saldo da conta = inicial + entradas − saídas (compras no crédito não contam)
     const accountBalance = (accountId: string) => {
       const init = store.accounts.find((a) => a.id === accountId)?.initialBalance ?? 0;
       const delta = paid
         .filter((t) => t.accountId === accountId)
         .reduce((s, t) => {
           if (t.type === "income" || t.type === "opening_balance") return s + t.amount;
-          if (t.type === "expense" || t.type === "investment" || t.type === "amortization")
+          if (t.type === "expense") {
+            // Credit-card purchases do not touch the account.
+            if (t.paymentMethod === "credito") return s;
+            return s - t.amount;
+          }
+          if (
+            t.type === "investment" ||
+            t.type === "amortization" ||
+            t.type === "invoice_payment"
+          )
             return s - t.amount;
           return s;
         }, 0);

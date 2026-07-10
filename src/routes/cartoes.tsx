@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Trash2, CreditCard as CardIcon } from "lucide-react";
+import { Plus, Trash2, CreditCard as CardIcon, ExternalLink, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useStore } from "@/services/store";
 import { brl, dateBR } from "@/utils/format";
 import {
@@ -21,8 +28,10 @@ import {
   cardInvoices,
   cardOpenInvoice,
   cardUsedLimit,
+  type CardInvoice,
+  type InvoiceStatus,
 } from "@/utils/cards";
-import type { CreditCard } from "@/types";
+import type { CreditCard, Transaction } from "@/types";
 
 export const Route = createFileRoute("/cartoes")({
   head: () => ({ meta: [{ title: "Cartões · ManyMoney" }] }),
@@ -44,7 +53,7 @@ function CartoesPage() {
     <div>
       <PageHeader
         title="Cartões"
-        subtitle="Limite, fatura aberta e compras — calculados automaticamente a partir das despesas no crédito."
+        subtitle="Limite, fatura aberta e pagamento — calculados a partir das despesas no crédito."
         actions={
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -158,7 +167,7 @@ function CardPanel({
   onDelete,
 }: {
   card: CreditCard;
-  transactions: ReturnType<typeof useStore.getState>["transactions"];
+  transactions: Transaction[];
   onDelete: () => void;
 }) {
   const used = cardUsedLimit(card, transactions);
@@ -170,7 +179,6 @@ function CardPanel({
   return (
     <div className="glass-card rounded-2xl overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr]">
-        {/* Visual card + limits */}
         <div className="p-5 border-b lg:border-b-0 lg:border-r border-border">
           <div
             className="relative rounded-2xl p-5 h-48 flex flex-col justify-between overflow-hidden"
@@ -222,7 +230,6 @@ function CardPanel({
           </div>
         </div>
 
-        {/* Invoices */}
         <div className="p-5">
           <h3 className="text-sm font-semibold mb-3">Faturas</h3>
           {invoices.length === 0 ? (
@@ -231,51 +238,47 @@ function CardPanel({
               forma de pagamento <b>Crédito</b>.
             </p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {invoices.map((inv) => (
-                <div key={inv.key} className="rounded-xl border border-border">
-                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">
-                        Fatura {formatInvoiceMonth(inv.key)}
-                      </span>
-                      <StatusBadge status={inv.status} />
-                    </div>
-                    <div className="text-sm number-tabular font-semibold">
-                      {brl(inv.total)}
-                    </div>
-                  </div>
-                  <ul className="divide-y divide-border/60 text-sm">
-                    {inv.items.map((it) => (
-                      <li
-                        key={`${it.transactionId}-${it.installmentIndex}`}
-                        className="px-4 py-2 flex items-center justify-between gap-3"
-                      >
-                        <div className="min-w-0">
-                          <div className="truncate">
-                            {it.description}
-                            {it.installmentsTotal > 1 && (
-                              <span className="text-muted-foreground text-xs ml-2">
-                                {it.installmentIndex}/{it.installmentsTotal}
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {it.category} · compra {dateBR(it.purchaseDate)} · vence{" "}
-                            {dateBR(it.invoiceDueDate)}
-                          </div>
-                        </div>
-                        <div className="number-tabular text-sm">
-                          {brl(it.amount)}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <InvoiceRow key={inv.key} card={card} invoice={inv} />
               ))}
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function InvoiceRow({ card, invoice }: { card: CreditCard; invoice: CardInvoice }) {
+  return (
+    <div className="rounded-xl border border-border p-4 flex flex-wrap items-center gap-3 justify-between">
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">Fatura {formatInvoiceMonth(invoice.key)}</span>
+          <StatusBadge status={invoice.status} />
+        </div>
+        <div className="text-xs text-muted-foreground mt-0.5">
+          Vence {dateBR(invoice.dueDate)} · {invoice.items.length} lançamento(s)
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="text-right">
+          <div className="text-sm font-semibold number-tabular">{brl(invoice.total)}</div>
+          {invoice.paid > 0 && invoice.status !== "paid" && (
+            <div className="text-[10px] text-muted-foreground">
+              pago {brl(invoice.paid)}
+            </div>
+          )}
+        </div>
+        <Button asChild size="sm" variant="outline" className="gap-1.5">
+          <Link
+            to="/faturas/$cardId/$invoiceKey"
+            params={{ cardId: card.id, invoiceKey: invoice.key }}
+          >
+            Ver fatura <ExternalLink className="size-3.5" />
+          </Link>
+        </Button>
       </div>
     </div>
   );
@@ -305,22 +308,113 @@ function Stat({
   );
 }
 
-function StatusBadge({ status }: { status: "open" | "closed" | "future" }) {
-  const map = {
+export function StatusBadge({ status }: { status: InvoiceStatus }) {
+  const map: Record<InvoiceStatus, { label: string; cls: string }> = {
     open: { label: "Aberta", cls: "bg-amber-500/15 text-amber-300" },
     closed: { label: "Fechada", cls: "bg-muted text-muted-foreground" },
     future: { label: "Futura", cls: "bg-sky-500/15 text-sky-300" },
-  } as const;
+    paid: { label: "Paga", cls: "bg-emerald-500/15 text-emerald-300" },
+  };
   const it = map[status];
   return (
-    <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full ${it.cls}`}>
+    <span
+      className={`inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full ${it.cls}`}
+    >
+      {status === "paid" && <CheckCircle2 className="size-3" />}
       {it.label}
     </span>
   );
 }
 
-function formatInvoiceMonth(key: string) {
+export function formatInvoiceMonth(key: string) {
   const [y, m] = key.split("-").map(Number);
   const d = new Date(y, (m ?? 1) - 1, 1);
   return d.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+}
+
+// Re-export used by the invoice detail route
+export type { CreditCard };
+
+// Payment dialog reused by the invoice detail page
+export function PayInvoiceDialog({
+  card,
+  invoice,
+  trigger,
+}: {
+  card: CreditCard;
+  invoice: CardInvoice;
+  trigger: React.ReactNode;
+}) {
+  const { accounts, payInvoice } = useStore();
+  const [open, setOpen] = useState(false);
+  const outstanding = Math.max(0, invoice.total - invoice.paid);
+  const [amount, setAmount] = useState(outstanding);
+  const [accountId, setAccountId] = useState(card.accountId ?? accounts[0]?.id ?? "");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        setOpen(v);
+        if (v) setAmount(Math.max(0, invoice.total - invoice.paid));
+      }}
+    >
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Pagar fatura {formatInvoiceMonth(invoice.key)}</DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="col-span-2">
+            <Label>Conta de débito</Label>
+            <Select value={accountId} onValueChange={setAccountId}>
+              <SelectTrigger><SelectValue placeholder="Selecione a conta" /></SelectTrigger>
+              <SelectContent>
+                {accounts.map((a) => (
+                  <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Valor (R$)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(+e.target.value)}
+            />
+          </div>
+          <div>
+            <Label>Data do pagamento</Label>
+            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          </div>
+          <div className="col-span-2 text-xs text-muted-foreground">
+            Total da fatura: <b>{brl(invoice.total)}</b>
+            {invoice.paid > 0 && <> · já pago {brl(invoice.paid)}</>}
+          </div>
+          <div className="col-span-2 flex justify-end gap-2 pt-1">
+            <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button
+              onClick={() => {
+                if (!accountId || amount <= 0) return;
+                payInvoice({
+                  cardId: card.id,
+                  invoiceKey: invoice.key,
+                  amount,
+                  accountId,
+                  date,
+                });
+                toast.success("Fatura paga");
+                setOpen(false);
+              }}
+            >
+              Confirmar pagamento
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
