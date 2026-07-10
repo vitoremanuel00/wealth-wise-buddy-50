@@ -25,6 +25,7 @@ import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as CasaRouteImport } from './routes/casa'
 import { Route as CartoesRouteImport } from './routes/cartoes'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FaturasCardIdInvoiceKeyRouteImport } from './routes/faturas.$cardId.$invoiceKey'
 
 const ViagensRoute = ViagensRouteImport.update({
   id: '/viagens',
@@ -106,6 +107,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaturasCardIdInvoiceKeyRoute = FaturasCardIdInvoiceKeyRouteImport.update({
+  id: '/faturas/$cardId/$invoiceKey',
+  path: '/faturas/$cardId/$invoiceKey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/receitas': typeof ReceitasRoute
   '/relatorios': typeof RelatoriosRoute
   '/viagens': typeof ViagensRoute
+  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/receitas': typeof ReceitasRoute
   '/relatorios': typeof RelatoriosRoute
   '/viagens': typeof ViagensRoute
+  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/receitas': typeof ReceitasRoute
   '/relatorios': typeof RelatoriosRoute
   '/viagens': typeof ViagensRoute
+  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/receitas'
     | '/relatorios'
     | '/viagens'
+    | '/faturas/$cardId/$invoiceKey'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/receitas'
     | '/relatorios'
     | '/viagens'
+    | '/faturas/$cardId/$invoiceKey'
   id:
     | '__root__'
     | '/'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/receitas'
     | '/relatorios'
     | '/viagens'
+    | '/faturas/$cardId/$invoiceKey'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   ReceitasRoute: typeof ReceitasRoute
   RelatoriosRoute: typeof RelatoriosRoute
   ViagensRoute: typeof ViagensRoute
+  FaturasCardIdInvoiceKeyRoute: typeof FaturasCardIdInvoiceKeyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faturas/$cardId/$invoiceKey': {
+      id: '/faturas/$cardId/$invoiceKey'
+      path: '/faturas/$cardId/$invoiceKey'
+      fullPath: '/faturas/$cardId/$invoiceKey'
+      preLoaderRoute: typeof FaturasCardIdInvoiceKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -372,17 +392,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReceitasRoute: ReceitasRoute,
   RelatoriosRoute: RelatoriosRoute,
   ViagensRoute: ViagensRoute,
+  FaturasCardIdInvoiceKeyRoute: FaturasCardIdInvoiceKeyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
