@@ -7,7 +7,7 @@ import { useStore } from "@/services/store";
 import { brl } from "@/utils/format";
 import { Gem, Wallet, LineChart, Building2, Landmark } from "lucide-react";
 
-export const Route = createFileRoute("/patrimonio")({
+export const Route = createFileRoute("/_authenticated/patrimonio")({
   head: () => ({ meta: [{ title: "Patrimônio · ManyMoney" }] }),
   component: PatrimonioPage,
 });

@@ -4,7 +4,7 @@ import { useStore } from "@/services/store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/moto")({
+export const Route = createFileRoute("/_authenticated/moto")({
   head: () => ({ meta: [{ title: "Moto · ManyMoney" }] }),
   component: () => {
     const { motorcycle } = useStore();

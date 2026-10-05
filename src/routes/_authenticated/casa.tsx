@@ -17,7 +17,7 @@ import { useStore } from "@/services/store";
 import { brl } from "@/utils/format";
 import type { HouseItem } from "@/types";
 
-export const Route = createFileRoute("/casa")({
+export const Route = createFileRoute("/_authenticated/casa")({
   head: () => ({ meta: [{ title: "Casa · ManyMoney" }] }),
   component: CasaPage,
 });

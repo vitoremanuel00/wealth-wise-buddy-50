@@ -16,7 +16,7 @@ import { useStore } from "@/services/store";
 import { brl, pct } from "@/utils/format";
 import type { Investment } from "@/types";
 
-export const Route = createFileRoute("/investimentos")({
+export const Route = createFileRoute("/_authenticated/investimentos")({
   head: () => ({ meta: [{ title: "Investimentos · ManyMoney" }] }),
   component: InvestimentosPage,
 });
