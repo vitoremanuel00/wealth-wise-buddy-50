@@ -9,92 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ViagensRouteImport } from './routes/viagens'
-import { Route as RelatoriosRouteImport } from './routes/relatorios'
-import { Route as ReceitasRouteImport } from './routes/receitas'
-import { Route as PatrimonioRouteImport } from './routes/patrimonio'
-import { Route as MotoRouteImport } from './routes/moto'
-import { Route as MetasRouteImport } from './routes/metas'
-import { Route as MercadoPagoRouteImport } from './routes/mercado-pago'
-import { Route as InvestimentosRouteImport } from './routes/investimentos'
-import { Route as FluxoRouteImport } from './routes/fluxo'
-import { Route as FinanciamentosRouteImport } from './routes/financiamentos'
-import { Route as DespesasRouteImport } from './routes/despesas'
-import { Route as ContasRouteImport } from './routes/contas'
-import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
-import { Route as CasaRouteImport } from './routes/casa'
-import { Route as CartoesRouteImport } from './routes/cartoes'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CartoesRouteImport } from './routes/cartoes'
+import { Route as CasaRouteImport } from './routes/casa'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as ContasRouteImport } from './routes/contas'
+import { Route as DespesasRouteImport } from './routes/despesas'
+import { Route as FinanciamentosRouteImport } from './routes/financiamentos'
+import { Route as FluxoRouteImport } from './routes/fluxo'
+import { Route as InvestimentosRouteImport } from './routes/investimentos'
+import { Route as MercadoPagoRouteImport } from './routes/mercado-pago'
+import { Route as MetasRouteImport } from './routes/metas'
+import { Route as MotoRouteImport } from './routes/moto'
+import { Route as PatrimonioRouteImport } from './routes/patrimonio'
+import { Route as ReceitasRouteImport } from './routes/receitas'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as ViagensRouteImport } from './routes/viagens'
 import { Route as FaturasCardIdInvoiceKeyRouteImport } from './routes/faturas.$cardId.$invoiceKey'
 
-const ViagensRoute = ViagensRouteImport.update({
-  id: '/viagens',
-  path: '/viagens',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RelatoriosRoute = RelatoriosRouteImport.update({
-  id: '/relatorios',
-  path: '/relatorios',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReceitasRoute = ReceitasRouteImport.update({
-  id: '/receitas',
-  path: '/receitas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PatrimonioRoute = PatrimonioRouteImport.update({
-  id: '/patrimonio',
-  path: '/patrimonio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MotoRoute = MotoRouteImport.update({
-  id: '/moto',
-  path: '/moto',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MetasRoute = MetasRouteImport.update({
-  id: '/metas',
-  path: '/metas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MercadoPagoRoute = MercadoPagoRouteImport.update({
-  id: '/mercado-pago',
-  path: '/mercado-pago',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InvestimentosRoute = InvestimentosRouteImport.update({
-  id: '/investimentos',
-  path: '/investimentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FluxoRoute = FluxoRouteImport.update({
-  id: '/fluxo',
-  path: '/fluxo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FinanciamentosRoute = FinanciamentosRouteImport.update({
-  id: '/financiamentos',
-  path: '/financiamentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DespesasRoute = DespesasRouteImport.update({
-  id: '/despesas',
-  path: '/despesas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContasRoute = ContasRouteImport.update({
-  id: '/contas',
-  path: '/contas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
-  id: '/configuracoes',
-  path: '/configuracoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CasaRoute = CasaRouteImport.update({
-  id: '/casa',
-  path: '/casa',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartoesRoute = CartoesRouteImport.update({
@@ -102,9 +37,74 @@ const CartoesRoute = CartoesRouteImport.update({
   path: '/cartoes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CasaRoute = CasaRouteImport.update({
+  id: '/casa',
+  path: '/casa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContasRoute = ContasRouteImport.update({
+  id: '/contas',
+  path: '/contas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DespesasRoute = DespesasRouteImport.update({
+  id: '/despesas',
+  path: '/despesas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanciamentosRoute = FinanciamentosRouteImport.update({
+  id: '/financiamentos',
+  path: '/financiamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FluxoRoute = FluxoRouteImport.update({
+  id: '/fluxo',
+  path: '/fluxo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvestimentosRoute = InvestimentosRouteImport.update({
+  id: '/investimentos',
+  path: '/investimentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MercadoPagoRoute = MercadoPagoRouteImport.update({
+  id: '/mercado-pago',
+  path: '/mercado-pago',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetasRoute = MetasRouteImport.update({
+  id: '/metas',
+  path: '/metas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotoRoute = MotoRouteImport.update({
+  id: '/moto',
+  path: '/moto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PatrimonioRoute = PatrimonioRouteImport.update({
+  id: '/patrimonio',
+  path: '/patrimonio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceitasRoute = ReceitasRouteImport.update({
+  id: '/receitas',
+  path: '/receitas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ViagensRoute = ViagensRouteImport.update({
+  id: '/viagens',
+  path: '/viagens',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaturasCardIdInvoiceKeyRoute = FaturasCardIdInvoiceKeyRouteImport.update({
@@ -253,102 +253,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/viagens': {
-      id: '/viagens'
-      path: '/viagens'
-      fullPath: '/viagens'
-      preLoaderRoute: typeof ViagensRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/relatorios': {
-      id: '/relatorios'
-      path: '/relatorios'
-      fullPath: '/relatorios'
-      preLoaderRoute: typeof RelatoriosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/receitas': {
-      id: '/receitas'
-      path: '/receitas'
-      fullPath: '/receitas'
-      preLoaderRoute: typeof ReceitasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/patrimonio': {
-      id: '/patrimonio'
-      path: '/patrimonio'
-      fullPath: '/patrimonio'
-      preLoaderRoute: typeof PatrimonioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/moto': {
-      id: '/moto'
-      path: '/moto'
-      fullPath: '/moto'
-      preLoaderRoute: typeof MotoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/metas': {
-      id: '/metas'
-      path: '/metas'
-      fullPath: '/metas'
-      preLoaderRoute: typeof MetasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mercado-pago': {
-      id: '/mercado-pago'
-      path: '/mercado-pago'
-      fullPath: '/mercado-pago'
-      preLoaderRoute: typeof MercadoPagoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/investimentos': {
-      id: '/investimentos'
-      path: '/investimentos'
-      fullPath: '/investimentos'
-      preLoaderRoute: typeof InvestimentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fluxo': {
-      id: '/fluxo'
-      path: '/fluxo'
-      fullPath: '/fluxo'
-      preLoaderRoute: typeof FluxoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/financiamentos': {
-      id: '/financiamentos'
-      path: '/financiamentos'
-      fullPath: '/financiamentos'
-      preLoaderRoute: typeof FinanciamentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/despesas': {
-      id: '/despesas'
-      path: '/despesas'
-      fullPath: '/despesas'
-      preLoaderRoute: typeof DespesasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contas': {
-      id: '/contas'
-      path: '/contas'
-      fullPath: '/contas'
-      preLoaderRoute: typeof ContasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/configuracoes': {
-      id: '/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/configuracoes'
-      preLoaderRoute: typeof ConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/casa': {
-      id: '/casa'
-      path: '/casa'
-      fullPath: '/casa'
-      preLoaderRoute: typeof CasaRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cartoes': {
@@ -358,11 +267,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartoesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/casa': {
+      id: '/casa'
+      path: '/casa'
+      fullPath: '/casa'
+      preLoaderRoute: typeof CasaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contas': {
+      id: '/contas'
+      path: '/contas'
+      fullPath: '/contas'
+      preLoaderRoute: typeof ContasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/despesas': {
+      id: '/despesas'
+      path: '/despesas'
+      fullPath: '/despesas'
+      preLoaderRoute: typeof DespesasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financiamentos': {
+      id: '/financiamentos'
+      path: '/financiamentos'
+      fullPath: '/financiamentos'
+      preLoaderRoute: typeof FinanciamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fluxo': {
+      id: '/fluxo'
+      path: '/fluxo'
+      fullPath: '/fluxo'
+      preLoaderRoute: typeof FluxoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/investimentos': {
+      id: '/investimentos'
+      path: '/investimentos'
+      fullPath: '/investimentos'
+      preLoaderRoute: typeof InvestimentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mercado-pago': {
+      id: '/mercado-pago'
+      path: '/mercado-pago'
+      fullPath: '/mercado-pago'
+      preLoaderRoute: typeof MercadoPagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metas': {
+      id: '/metas'
+      path: '/metas'
+      fullPath: '/metas'
+      preLoaderRoute: typeof MetasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/moto': {
+      id: '/moto'
+      path: '/moto'
+      fullPath: '/moto'
+      preLoaderRoute: typeof MotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/patrimonio': {
+      id: '/patrimonio'
+      path: '/patrimonio'
+      fullPath: '/patrimonio'
+      preLoaderRoute: typeof PatrimonioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/receitas': {
+      id: '/receitas'
+      path: '/receitas'
+      fullPath: '/receitas'
+      preLoaderRoute: typeof ReceitasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/viagens': {
+      id: '/viagens'
+      path: '/viagens'
+      fullPath: '/viagens'
+      preLoaderRoute: typeof ViagensRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faturas/$cardId/$invoiceKey': {
