@@ -1,4 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useStore } from "@/services/store";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
@@ -67,8 +71,19 @@ const nav: Section[] = [
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ email }: { email: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  async function signOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    useStore.getState().reset();
+    useStore.persist.clearStorage();
+    navigate({ to: "/auth", replace: true });
+  }
 
   return (
     <aside className="hidden md:flex md:w-64 lg:w-72 flex-col bg-sidebar border-r border-sidebar-border shrink-0">
@@ -124,8 +139,19 @@ export function AppSidebar() {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-sidebar-border text-[11px] text-muted-foreground">
-        MVP single-user · v0.1
+      <div className="p-4 border-t border-sidebar-border flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Conectado</div>
+          <div className="truncate text-xs text-sidebar-foreground">{email}</div>
+        </div>
+        <button
+          type="button"
+          onClick={signOut}
+          aria-label="Sair"
+          className="size-8 grid place-items-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent"
+        >
+          <LogOut className="size-4" />
+        </button>
       </div>
     </aside>
   );
