@@ -7,7 +7,7 @@ import { brl } from "@/utils/format";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/relatorios")({
+export const Route = createFileRoute("/_authenticated/relatorios")({
   head: () => ({ meta: [{ title: "Relatórios · ManyMoney" }] }),
   component: RelatoriosPage,
 });

@@ -10,7 +10,7 @@ import {
   formatInvoiceMonth,
 } from "./cartoes";
 
-export const Route = createFileRoute("/faturas/$cardId/$invoiceKey")({
+export const Route = createFileRoute("/_authenticated/faturas/$cardId/$invoiceKey")({
   head: () => ({ meta: [{ title: "Fatura · ManyMoney" }] }),
   component: InvoiceDetailPage,
 });

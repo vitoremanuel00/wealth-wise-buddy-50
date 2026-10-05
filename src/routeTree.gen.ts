@@ -9,172 +9,193 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as CartoesRouteImport } from './routes/cartoes'
-import { Route as CasaRouteImport } from './routes/casa'
-import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
-import { Route as ContasRouteImport } from './routes/contas'
-import { Route as DespesasRouteImport } from './routes/despesas'
-import { Route as FinanciamentosRouteImport } from './routes/financiamentos'
-import { Route as FluxoRouteImport } from './routes/fluxo'
-import { Route as InvestimentosRouteImport } from './routes/investimentos'
-import { Route as MercadoPagoRouteImport } from './routes/mercado-pago'
-import { Route as MetasRouteImport } from './routes/metas'
-import { Route as MotoRouteImport } from './routes/moto'
-import { Route as PatrimonioRouteImport } from './routes/patrimonio'
-import { Route as ReceitasRouteImport } from './routes/receitas'
-import { Route as RelatoriosRouteImport } from './routes/relatorios'
-import { Route as ViagensRouteImport } from './routes/viagens'
-import { Route as FaturasCardIdInvoiceKeyRouteImport } from './routes/faturas.$cardId.$invoiceKey'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedCartoesRouteImport } from './routes/_authenticated/cartoes'
+import { Route as AuthenticatedCasaRouteImport } from './routes/_authenticated/casa'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedContasRouteImport } from './routes/_authenticated/contas'
+import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated/despesas'
+import { Route as AuthenticatedFinanciamentosRouteImport } from './routes/_authenticated/financiamentos'
+import { Route as AuthenticatedFluxoRouteImport } from './routes/_authenticated/fluxo'
+import { Route as AuthenticatedInvestimentosRouteImport } from './routes/_authenticated/investimentos'
+import { Route as AuthenticatedMercadoPagoRouteImport } from './routes/_authenticated/mercado-pago'
+import { Route as AuthenticatedMetasRouteImport } from './routes/_authenticated/metas'
+import { Route as AuthenticatedMotoRouteImport } from './routes/_authenticated/moto'
+import { Route as AuthenticatedPatrimonioRouteImport } from './routes/_authenticated/patrimonio'
+import { Route as AuthenticatedReceitasRouteImport } from './routes/_authenticated/receitas'
+import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
+import { Route as AuthenticatedViagensRouteImport } from './routes/_authenticated/viagens'
+import { Route as AuthenticatedFaturasCardIdInvoiceKeyRouteImport } from './routes/_authenticated/faturas.$cardId.$invoiceKey'
 
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const CartoesRoute = CartoesRouteImport.update({
+const AuthenticatedCartoesRoute = AuthenticatedCartoesRouteImport.update({
   id: '/cartoes',
   path: '/cartoes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const CasaRoute = CasaRouteImport.update({
+const AuthenticatedCasaRoute = AuthenticatedCasaRouteImport.update({
   id: '/casa',
   path: '/casa',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
-  id: '/configuracoes',
-  path: '/configuracoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContasRoute = ContasRouteImport.update({
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedContasRoute = AuthenticatedContasRouteImport.update({
   id: '/contas',
   path: '/contas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const DespesasRoute = DespesasRouteImport.update({
+const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
   id: '/despesas',
   path: '/despesas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const FinanciamentosRoute = FinanciamentosRouteImport.update({
-  id: '/financiamentos',
-  path: '/financiamentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FluxoRoute = FluxoRouteImport.update({
+const AuthenticatedFinanciamentosRoute =
+  AuthenticatedFinanciamentosRouteImport.update({
+    id: '/financiamentos',
+    path: '/financiamentos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFluxoRoute = AuthenticatedFluxoRouteImport.update({
   id: '/fluxo',
   path: '/fluxo',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const InvestimentosRoute = InvestimentosRouteImport.update({
-  id: '/investimentos',
-  path: '/investimentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MercadoPagoRoute = MercadoPagoRouteImport.update({
-  id: '/mercado-pago',
-  path: '/mercado-pago',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MetasRoute = MetasRouteImport.update({
+const AuthenticatedInvestimentosRoute =
+  AuthenticatedInvestimentosRouteImport.update({
+    id: '/investimentos',
+    path: '/investimentos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMercadoPagoRoute =
+  AuthenticatedMercadoPagoRouteImport.update({
+    id: '/mercado-pago',
+    path: '/mercado-pago',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMetasRoute = AuthenticatedMetasRouteImport.update({
   id: '/metas',
   path: '/metas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const MotoRoute = MotoRouteImport.update({
+const AuthenticatedMotoRoute = AuthenticatedMotoRouteImport.update({
   id: '/moto',
   path: '/moto',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const PatrimonioRoute = PatrimonioRouteImport.update({
+const AuthenticatedPatrimonioRoute = AuthenticatedPatrimonioRouteImport.update({
   id: '/patrimonio',
   path: '/patrimonio',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ReceitasRoute = ReceitasRouteImport.update({
+const AuthenticatedReceitasRoute = AuthenticatedReceitasRouteImport.update({
   id: '/receitas',
   path: '/receitas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const RelatoriosRoute = RelatoriosRouteImport.update({
+const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ViagensRoute = ViagensRouteImport.update({
+const AuthenticatedViagensRoute = AuthenticatedViagensRouteImport.update({
   id: '/viagens',
   path: '/viagens',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const FaturasCardIdInvoiceKeyRoute = FaturasCardIdInvoiceKeyRouteImport.update({
-  id: '/faturas/$cardId/$invoiceKey',
-  path: '/faturas/$cardId/$invoiceKey',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedFaturasCardIdInvoiceKeyRoute =
+  AuthenticatedFaturasCardIdInvoiceKeyRouteImport.update({
+    id: '/faturas/$cardId/$invoiceKey',
+    path: '/faturas/$cardId/$invoiceKey',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/cartoes': typeof CartoesRoute
-  '/casa': typeof CasaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/contas': typeof ContasRoute
-  '/despesas': typeof DespesasRoute
-  '/financiamentos': typeof FinanciamentosRoute
-  '/fluxo': typeof FluxoRoute
-  '/investimentos': typeof InvestimentosRoute
-  '/mercado-pago': typeof MercadoPagoRoute
-  '/metas': typeof MetasRoute
-  '/moto': typeof MotoRoute
-  '/patrimonio': typeof PatrimonioRoute
-  '/receitas': typeof ReceitasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/viagens': typeof ViagensRoute
-  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
+  '/cartoes': typeof AuthenticatedCartoesRoute
+  '/casa': typeof AuthenticatedCasaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/contas': typeof AuthenticatedContasRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
+  '/financiamentos': typeof AuthenticatedFinanciamentosRoute
+  '/fluxo': typeof AuthenticatedFluxoRoute
+  '/investimentos': typeof AuthenticatedInvestimentosRoute
+  '/mercado-pago': typeof AuthenticatedMercadoPagoRoute
+  '/metas': typeof AuthenticatedMetasRoute
+  '/moto': typeof AuthenticatedMotoRoute
+  '/patrimonio': typeof AuthenticatedPatrimonioRoute
+  '/receitas': typeof AuthenticatedReceitasRoute
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/viagens': typeof AuthenticatedViagensRoute
+  '/faturas/$cardId/$invoiceKey': typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/cartoes': typeof CartoesRoute
-  '/casa': typeof CasaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/contas': typeof ContasRoute
-  '/despesas': typeof DespesasRoute
-  '/financiamentos': typeof FinanciamentosRoute
-  '/fluxo': typeof FluxoRoute
-  '/investimentos': typeof InvestimentosRoute
-  '/mercado-pago': typeof MercadoPagoRoute
-  '/metas': typeof MetasRoute
-  '/moto': typeof MotoRoute
-  '/patrimonio': typeof PatrimonioRoute
-  '/receitas': typeof ReceitasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/viagens': typeof ViagensRoute
-  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
+  '/auth': typeof AuthRoute
+  '/cartoes': typeof AuthenticatedCartoesRoute
+  '/casa': typeof AuthenticatedCasaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/contas': typeof AuthenticatedContasRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
+  '/financiamentos': typeof AuthenticatedFinanciamentosRoute
+  '/fluxo': typeof AuthenticatedFluxoRoute
+  '/investimentos': typeof AuthenticatedInvestimentosRoute
+  '/mercado-pago': typeof AuthenticatedMercadoPagoRoute
+  '/metas': typeof AuthenticatedMetasRoute
+  '/moto': typeof AuthenticatedMotoRoute
+  '/patrimonio': typeof AuthenticatedPatrimonioRoute
+  '/receitas': typeof AuthenticatedReceitasRoute
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/viagens': typeof AuthenticatedViagensRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/faturas/$cardId/$invoiceKey': typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/cartoes': typeof CartoesRoute
-  '/casa': typeof CasaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/contas': typeof ContasRoute
-  '/despesas': typeof DespesasRoute
-  '/financiamentos': typeof FinanciamentosRoute
-  '/fluxo': typeof FluxoRoute
-  '/investimentos': typeof InvestimentosRoute
-  '/mercado-pago': typeof MercadoPagoRoute
-  '/metas': typeof MetasRoute
-  '/moto': typeof MotoRoute
-  '/patrimonio': typeof PatrimonioRoute
-  '/receitas': typeof ReceitasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/viagens': typeof ViagensRoute
-  '/faturas/$cardId/$invoiceKey': typeof FaturasCardIdInvoiceKeyRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/cartoes': typeof AuthenticatedCartoesRoute
+  '/_authenticated/casa': typeof AuthenticatedCasaRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/contas': typeof AuthenticatedContasRoute
+  '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
+  '/_authenticated/financiamentos': typeof AuthenticatedFinanciamentosRoute
+  '/_authenticated/fluxo': typeof AuthenticatedFluxoRoute
+  '/_authenticated/investimentos': typeof AuthenticatedInvestimentosRoute
+  '/_authenticated/mercado-pago': typeof AuthenticatedMercadoPagoRoute
+  '/_authenticated/metas': typeof AuthenticatedMetasRoute
+  '/_authenticated/moto': typeof AuthenticatedMotoRoute
+  '/_authenticated/patrimonio': typeof AuthenticatedPatrimonioRoute
+  '/_authenticated/receitas': typeof AuthenticatedReceitasRoute
+  '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/_authenticated/viagens': typeof AuthenticatedViagensRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/faturas/$cardId/$invoiceKey': typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/cartoes'
     | '/casa'
     | '/configuracoes'
@@ -193,7 +214,7 @@ export interface FileRouteTypes {
     | '/faturas/$cardId/$invoiceKey'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
+    | '/auth'
     | '/cartoes'
     | '/casa'
     | '/configuracoes'
@@ -209,190 +230,221 @@ export interface FileRouteTypes {
     | '/receitas'
     | '/relatorios'
     | '/viagens'
+    | '/'
     | '/faturas/$cardId/$invoiceKey'
   id:
     | '__root__'
-    | '/'
-    | '/cartoes'
-    | '/casa'
-    | '/configuracoes'
-    | '/contas'
-    | '/despesas'
-    | '/financiamentos'
-    | '/fluxo'
-    | '/investimentos'
-    | '/mercado-pago'
-    | '/metas'
-    | '/moto'
-    | '/patrimonio'
-    | '/receitas'
-    | '/relatorios'
-    | '/viagens'
-    | '/faturas/$cardId/$invoiceKey'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/cartoes'
+    | '/_authenticated/casa'
+    | '/_authenticated/configuracoes'
+    | '/_authenticated/contas'
+    | '/_authenticated/despesas'
+    | '/_authenticated/financiamentos'
+    | '/_authenticated/fluxo'
+    | '/_authenticated/investimentos'
+    | '/_authenticated/mercado-pago'
+    | '/_authenticated/metas'
+    | '/_authenticated/moto'
+    | '/_authenticated/patrimonio'
+    | '/_authenticated/receitas'
+    | '/_authenticated/relatorios'
+    | '/_authenticated/viagens'
+    | '/_authenticated/'
+    | '/_authenticated/faturas/$cardId/$invoiceKey'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CartoesRoute: typeof CartoesRoute
-  CasaRoute: typeof CasaRoute
-  ConfiguracoesRoute: typeof ConfiguracoesRoute
-  ContasRoute: typeof ContasRoute
-  DespesasRoute: typeof DespesasRoute
-  FinanciamentosRoute: typeof FinanciamentosRoute
-  FluxoRoute: typeof FluxoRoute
-  InvestimentosRoute: typeof InvestimentosRoute
-  MercadoPagoRoute: typeof MercadoPagoRoute
-  MetasRoute: typeof MetasRoute
-  MotoRoute: typeof MotoRoute
-  PatrimonioRoute: typeof PatrimonioRoute
-  ReceitasRoute: typeof ReceitasRoute
-  RelatoriosRoute: typeof RelatoriosRoute
-  ViagensRoute: typeof ViagensRoute
-  FaturasCardIdInvoiceKeyRoute: typeof FaturasCardIdInvoiceKeyRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/cartoes': {
-      id: '/cartoes'
+    '/_authenticated/cartoes': {
+      id: '/_authenticated/cartoes'
       path: '/cartoes'
       fullPath: '/cartoes'
-      preLoaderRoute: typeof CartoesRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedCartoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/casa': {
-      id: '/casa'
+    '/_authenticated/casa': {
+      id: '/_authenticated/casa'
       path: '/casa'
       fullPath: '/casa'
-      preLoaderRoute: typeof CasaRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedCasaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/configuracoes': {
-      id: '/configuracoes'
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
       path: '/configuracoes'
       fullPath: '/configuracoes'
-      preLoaderRoute: typeof ConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/contas': {
-      id: '/contas'
+    '/_authenticated/contas': {
+      id: '/_authenticated/contas'
       path: '/contas'
       fullPath: '/contas'
-      preLoaderRoute: typeof ContasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedContasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/despesas': {
-      id: '/despesas'
+    '/_authenticated/despesas': {
+      id: '/_authenticated/despesas'
       path: '/despesas'
       fullPath: '/despesas'
-      preLoaderRoute: typeof DespesasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedDespesasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/financiamentos': {
-      id: '/financiamentos'
+    '/_authenticated/financiamentos': {
+      id: '/_authenticated/financiamentos'
       path: '/financiamentos'
       fullPath: '/financiamentos'
-      preLoaderRoute: typeof FinanciamentosRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFinanciamentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/fluxo': {
-      id: '/fluxo'
+    '/_authenticated/fluxo': {
+      id: '/_authenticated/fluxo'
       path: '/fluxo'
       fullPath: '/fluxo'
-      preLoaderRoute: typeof FluxoRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFluxoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/investimentos': {
-      id: '/investimentos'
+    '/_authenticated/investimentos': {
+      id: '/_authenticated/investimentos'
       path: '/investimentos'
       fullPath: '/investimentos'
-      preLoaderRoute: typeof InvestimentosRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedInvestimentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/mercado-pago': {
-      id: '/mercado-pago'
+    '/_authenticated/mercado-pago': {
+      id: '/_authenticated/mercado-pago'
       path: '/mercado-pago'
       fullPath: '/mercado-pago'
-      preLoaderRoute: typeof MercadoPagoRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMercadoPagoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/metas': {
-      id: '/metas'
+    '/_authenticated/metas': {
+      id: '/_authenticated/metas'
       path: '/metas'
       fullPath: '/metas'
-      preLoaderRoute: typeof MetasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMetasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/moto': {
-      id: '/moto'
+    '/_authenticated/moto': {
+      id: '/_authenticated/moto'
       path: '/moto'
       fullPath: '/moto'
-      preLoaderRoute: typeof MotoRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedMotoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/patrimonio': {
-      id: '/patrimonio'
+    '/_authenticated/patrimonio': {
+      id: '/_authenticated/patrimonio'
       path: '/patrimonio'
       fullPath: '/patrimonio'
-      preLoaderRoute: typeof PatrimonioRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedPatrimonioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/receitas': {
-      id: '/receitas'
+    '/_authenticated/receitas': {
+      id: '/_authenticated/receitas'
       path: '/receitas'
       fullPath: '/receitas'
-      preLoaderRoute: typeof ReceitasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedReceitasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/relatorios': {
-      id: '/relatorios'
+    '/_authenticated/relatorios': {
+      id: '/_authenticated/relatorios'
       path: '/relatorios'
       fullPath: '/relatorios'
-      preLoaderRoute: typeof RelatoriosRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/viagens': {
-      id: '/viagens'
+    '/_authenticated/viagens': {
+      id: '/_authenticated/viagens'
       path: '/viagens'
       fullPath: '/viagens'
-      preLoaderRoute: typeof ViagensRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedViagensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/faturas/$cardId/$invoiceKey': {
-      id: '/faturas/$cardId/$invoiceKey'
+    '/_authenticated/faturas/$cardId/$invoiceKey': {
+      id: '/_authenticated/faturas/$cardId/$invoiceKey'
       path: '/faturas/$cardId/$invoiceKey'
       fullPath: '/faturas/$cardId/$invoiceKey'
-      preLoaderRoute: typeof FaturasCardIdInvoiceKeyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFaturasCardIdInvoiceKeyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCartoesRoute: typeof AuthenticatedCartoesRoute
+  AuthenticatedCasaRoute: typeof AuthenticatedCasaRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedContasRoute: typeof AuthenticatedContasRoute
+  AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
+  AuthenticatedFinanciamentosRoute: typeof AuthenticatedFinanciamentosRoute
+  AuthenticatedFluxoRoute: typeof AuthenticatedFluxoRoute
+  AuthenticatedInvestimentosRoute: typeof AuthenticatedInvestimentosRoute
+  AuthenticatedMercadoPagoRoute: typeof AuthenticatedMercadoPagoRoute
+  AuthenticatedMetasRoute: typeof AuthenticatedMetasRoute
+  AuthenticatedMotoRoute: typeof AuthenticatedMotoRoute
+  AuthenticatedPatrimonioRoute: typeof AuthenticatedPatrimonioRoute
+  AuthenticatedReceitasRoute: typeof AuthenticatedReceitasRoute
+  AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
+  AuthenticatedViagensRoute: typeof AuthenticatedViagensRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedFaturasCardIdInvoiceKeyRoute: typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCartoesRoute: AuthenticatedCartoesRoute,
+  AuthenticatedCasaRoute: AuthenticatedCasaRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedContasRoute: AuthenticatedContasRoute,
+  AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
+  AuthenticatedFinanciamentosRoute: AuthenticatedFinanciamentosRoute,
+  AuthenticatedFluxoRoute: AuthenticatedFluxoRoute,
+  AuthenticatedInvestimentosRoute: AuthenticatedInvestimentosRoute,
+  AuthenticatedMercadoPagoRoute: AuthenticatedMercadoPagoRoute,
+  AuthenticatedMetasRoute: AuthenticatedMetasRoute,
+  AuthenticatedMotoRoute: AuthenticatedMotoRoute,
+  AuthenticatedPatrimonioRoute: AuthenticatedPatrimonioRoute,
+  AuthenticatedReceitasRoute: AuthenticatedReceitasRoute,
+  AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
+  AuthenticatedViagensRoute: AuthenticatedViagensRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedFaturasCardIdInvoiceKeyRoute:
+    AuthenticatedFaturasCardIdInvoiceKeyRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CartoesRoute: CartoesRoute,
-  CasaRoute: CasaRoute,
-  ConfiguracoesRoute: ConfiguracoesRoute,
-  ContasRoute: ContasRoute,
-  DespesasRoute: DespesasRoute,
-  FinanciamentosRoute: FinanciamentosRoute,
-  FluxoRoute: FluxoRoute,
-  InvestimentosRoute: InvestimentosRoute,
-  MercadoPagoRoute: MercadoPagoRoute,
-  MetasRoute: MetasRoute,
-  MotoRoute: MotoRoute,
-  PatrimonioRoute: PatrimonioRoute,
-  ReceitasRoute: ReceitasRoute,
-  RelatoriosRoute: RelatoriosRoute,
-  ViagensRoute: ViagensRoute,
-  FaturasCardIdInvoiceKeyRoute: FaturasCardIdInvoiceKeyRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TransactionsView } from "@/features/transactions/TransactionsView";
 
-export const Route = createFileRoute("/receitas")({
+export const Route = createFileRoute("/_authenticated/receitas")({
   head: () => ({ meta: [{ title: "Receitas · ManyMoney" }] }),
   component: () => (
     <TransactionsView

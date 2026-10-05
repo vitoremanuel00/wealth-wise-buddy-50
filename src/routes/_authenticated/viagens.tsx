@@ -13,7 +13,7 @@ import {
 import { useStore } from "@/services/store";
 import { brl, dateBR } from "@/utils/format";
 
-export const Route = createFileRoute("/viagens")({
+export const Route = createFileRoute("/_authenticated/viagens")({
   head: () => ({ meta: [{ title: "Viagens · ManyMoney" }] }),
   component: ViagensPage,
 });

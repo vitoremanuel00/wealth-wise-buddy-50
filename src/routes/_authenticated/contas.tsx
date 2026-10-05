@@ -17,7 +17,7 @@ import { useStore } from "@/services/store";
 import { useFinance } from "@/hooks/useFinance";
 import { brl, monthKey } from "@/utils/format";
 
-export const Route = createFileRoute("/contas")({
+export const Route = createFileRoute("/_authenticated/contas")({
   head: () => ({ meta: [{ title: "Contas · ManyMoney" }] }),
   component: ContasPage,
 });

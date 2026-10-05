@@ -33,7 +33,7 @@ import {
 } from "@/utils/cards";
 import type { CreditCard, Transaction } from "@/types";
 
-export const Route = createFileRoute("/cartoes")({
+export const Route = createFileRoute("/_authenticated/cartoes")({
   head: () => ({ meta: [{ title: "Cartões · ManyMoney" }] }),
   component: CartoesPage,
 });

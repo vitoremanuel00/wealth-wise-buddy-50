@@ -12,7 +12,7 @@ import {
 import { useStore } from "@/services/store";
 import type { Category } from "@/types";
 
-export const Route = createFileRoute("/configuracoes")({
+export const Route = createFileRoute("/_authenticated/configuracoes")({
   head: () => ({ meta: [{ title: "Configurações · ManyMoney" }] }),
   component: ConfigPage,
 });

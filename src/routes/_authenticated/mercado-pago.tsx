@@ -13,7 +13,7 @@ import { brl, dateBR } from "@/utils/format";
 import { Landmark, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/mercado-pago")({
+export const Route = createFileRoute("/_authenticated/mercado-pago")({
   head: () => ({ meta: [{ title: "Mercado Pago · ManyMoney" }] }),
   component: MercadoPagoPage,
 });
