@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedCartoesRouteImport } from './routes/_authenticated/cartoes'
 import { Route as AuthenticatedCasaRouteImport } from './routes/_authenticated/casa'
@@ -27,98 +29,109 @@ import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authentic
 import { Route as AuthenticatedViagensRouteImport } from './routes/_authenticated/viagens'
 import { Route as AuthenticatedFaturasCardIdInvoiceKeyRouteImport } from './routes/_authenticated/faturas.$cardId.$invoiceKey'
 
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCartoesRoute = AuthenticatedCartoesRouteImport.update({
-  id: '/_authenticated/cartoes',
+  id: '/cartoes',
   path: '/cartoes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCasaRoute = AuthenticatedCasaRouteImport.update({
-  id: '/_authenticated/casa',
+  id: '/casa',
   path: '/casa',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedConfiguracoesRoute =
   AuthenticatedConfiguracoesRouteImport.update({
-    id: '/_authenticated/configuracoes',
+    id: '/configuracoes',
     path: '/configuracoes',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedContasRoute = AuthenticatedContasRouteImport.update({
-  id: '/_authenticated/contas',
+  id: '/contas',
   path: '/contas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
-  id: '/_authenticated/despesas',
+  id: '/despesas',
   path: '/despesas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFinanciamentosRoute =
   AuthenticatedFinanciamentosRouteImport.update({
-    id: '/_authenticated/financiamentos',
+    id: '/financiamentos',
     path: '/financiamentos',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedFluxoRoute = AuthenticatedFluxoRouteImport.update({
-  id: '/_authenticated/fluxo',
+  id: '/fluxo',
   path: '/fluxo',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedInvestimentosRoute =
   AuthenticatedInvestimentosRouteImport.update({
-    id: '/_authenticated/investimentos',
+    id: '/investimentos',
     path: '/investimentos',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMercadoPagoRoute =
   AuthenticatedMercadoPagoRouteImport.update({
-    id: '/_authenticated/mercado-pago',
+    id: '/mercado-pago',
     path: '/mercado-pago',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMetasRoute = AuthenticatedMetasRouteImport.update({
-  id: '/_authenticated/metas',
+  id: '/metas',
   path: '/metas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMotoRoute = AuthenticatedMotoRouteImport.update({
-  id: '/_authenticated/moto',
+  id: '/moto',
   path: '/moto',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPatrimonioRoute = AuthenticatedPatrimonioRouteImport.update({
-  id: '/_authenticated/patrimonio',
+  id: '/patrimonio',
   path: '/patrimonio',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedReceitasRoute = AuthenticatedReceitasRouteImport.update({
-  id: '/_authenticated/receitas',
+  id: '/receitas',
   path: '/receitas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
-  id: '/_authenticated/relatorios',
+  id: '/relatorios',
   path: '/relatorios',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedViagensRoute = AuthenticatedViagensRouteImport.update({
-  id: '/_authenticated/viagens',
+  id: '/viagens',
   path: '/viagens',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFaturasCardIdInvoiceKeyRoute =
   AuthenticatedFaturasCardIdInvoiceKeyRouteImport.update({
-    id: '/_authenticated/faturas/$cardId/$invoiceKey',
+    id: '/faturas/$cardId/$invoiceKey',
     path: '/faturas/$cardId/$invoiceKey',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
   '/cartoes': typeof AuthenticatedCartoesRoute
   '/casa': typeof AuthenticatedCasaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -134,10 +147,10 @@ export interface FileRoutesByFullPath {
   '/receitas': typeof AuthenticatedReceitasRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
   '/viagens': typeof AuthenticatedViagensRoute
-  '/': typeof AuthenticatedIndexRoute
   '/faturas/$cardId/$invoiceKey': typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
 }
 export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
   '/cartoes': typeof AuthenticatedCartoesRoute
   '/casa': typeof AuthenticatedCasaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -158,6 +171,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/_authenticated/cartoes': typeof AuthenticatedCartoesRoute
   '/_authenticated/casa': typeof AuthenticatedCasaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -179,6 +194,8 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/auth'
     | '/cartoes'
     | '/casa'
     | '/configuracoes'
@@ -194,10 +211,10 @@ export interface FileRouteTypes {
     | '/receitas'
     | '/relatorios'
     | '/viagens'
-    | '/'
     | '/faturas/$cardId/$invoiceKey'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth'
     | '/cartoes'
     | '/casa'
     | '/configuracoes'
@@ -217,6 +234,8 @@ export interface FileRouteTypes {
     | '/faturas/$cardId/$invoiceKey'
   id:
     | '__root__'
+    | '/_authenticated'
+    | '/auth'
     | '/_authenticated/cartoes'
     | '/_authenticated/casa'
     | '/_authenticated/configuracoes'
@@ -237,6 +256,149 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cartoes': {
+      id: '/_authenticated/cartoes'
+      path: '/cartoes'
+      fullPath: '/cartoes'
+      preLoaderRoute: typeof AuthenticatedCartoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/casa': {
+      id: '/_authenticated/casa'
+      path: '/casa'
+      fullPath: '/casa'
+      preLoaderRoute: typeof AuthenticatedCasaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/contas': {
+      id: '/_authenticated/contas'
+      path: '/contas'
+      fullPath: '/contas'
+      preLoaderRoute: typeof AuthenticatedContasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/despesas': {
+      id: '/_authenticated/despesas'
+      path: '/despesas'
+      fullPath: '/despesas'
+      preLoaderRoute: typeof AuthenticatedDespesasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/financiamentos': {
+      id: '/_authenticated/financiamentos'
+      path: '/financiamentos'
+      fullPath: '/financiamentos'
+      preLoaderRoute: typeof AuthenticatedFinanciamentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fluxo': {
+      id: '/_authenticated/fluxo'
+      path: '/fluxo'
+      fullPath: '/fluxo'
+      preLoaderRoute: typeof AuthenticatedFluxoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/investimentos': {
+      id: '/_authenticated/investimentos'
+      path: '/investimentos'
+      fullPath: '/investimentos'
+      preLoaderRoute: typeof AuthenticatedInvestimentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mercado-pago': {
+      id: '/_authenticated/mercado-pago'
+      path: '/mercado-pago'
+      fullPath: '/mercado-pago'
+      preLoaderRoute: typeof AuthenticatedMercadoPagoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/metas': {
+      id: '/_authenticated/metas'
+      path: '/metas'
+      fullPath: '/metas'
+      preLoaderRoute: typeof AuthenticatedMetasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/moto': {
+      id: '/_authenticated/moto'
+      path: '/moto'
+      fullPath: '/moto'
+      preLoaderRoute: typeof AuthenticatedMotoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/patrimonio': {
+      id: '/_authenticated/patrimonio'
+      path: '/patrimonio'
+      fullPath: '/patrimonio'
+      preLoaderRoute: typeof AuthenticatedPatrimonioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/receitas': {
+      id: '/_authenticated/receitas'
+      path: '/receitas'
+      fullPath: '/receitas'
+      preLoaderRoute: typeof AuthenticatedReceitasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/relatorios': {
+      id: '/_authenticated/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/viagens': {
+      id: '/_authenticated/viagens'
+      path: '/viagens'
+      fullPath: '/viagens'
+      preLoaderRoute: typeof AuthenticatedViagensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/faturas/$cardId/$invoiceKey': {
+      id: '/_authenticated/faturas/$cardId/$invoiceKey'
+      path: '/faturas/$cardId/$invoiceKey'
+      fullPath: '/faturas/$cardId/$invoiceKey'
+      preLoaderRoute: typeof AuthenticatedFaturasCardIdInvoiceKeyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedCartoesRoute: typeof AuthenticatedCartoesRoute
   AuthenticatedCasaRoute: typeof AuthenticatedCasaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
@@ -256,131 +418,7 @@ export interface RootRouteChildren {
   AuthenticatedFaturasCardIdInvoiceKeyRoute: typeof AuthenticatedFaturasCardIdInvoiceKeyRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/cartoes': {
-      id: '/_authenticated/cartoes'
-      path: '/cartoes'
-      fullPath: '/cartoes'
-      preLoaderRoute: typeof AuthenticatedCartoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/casa': {
-      id: '/_authenticated/casa'
-      path: '/casa'
-      fullPath: '/casa'
-      preLoaderRoute: typeof AuthenticatedCasaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/configuracoes': {
-      id: '/_authenticated/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/configuracoes'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/contas': {
-      id: '/_authenticated/contas'
-      path: '/contas'
-      fullPath: '/contas'
-      preLoaderRoute: typeof AuthenticatedContasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/despesas': {
-      id: '/_authenticated/despesas'
-      path: '/despesas'
-      fullPath: '/despesas'
-      preLoaderRoute: typeof AuthenticatedDespesasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/financiamentos': {
-      id: '/_authenticated/financiamentos'
-      path: '/financiamentos'
-      fullPath: '/financiamentos'
-      preLoaderRoute: typeof AuthenticatedFinanciamentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/fluxo': {
-      id: '/_authenticated/fluxo'
-      path: '/fluxo'
-      fullPath: '/fluxo'
-      preLoaderRoute: typeof AuthenticatedFluxoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/investimentos': {
-      id: '/_authenticated/investimentos'
-      path: '/investimentos'
-      fullPath: '/investimentos'
-      preLoaderRoute: typeof AuthenticatedInvestimentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/mercado-pago': {
-      id: '/_authenticated/mercado-pago'
-      path: '/mercado-pago'
-      fullPath: '/mercado-pago'
-      preLoaderRoute: typeof AuthenticatedMercadoPagoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/metas': {
-      id: '/_authenticated/metas'
-      path: '/metas'
-      fullPath: '/metas'
-      preLoaderRoute: typeof AuthenticatedMetasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/moto': {
-      id: '/_authenticated/moto'
-      path: '/moto'
-      fullPath: '/moto'
-      preLoaderRoute: typeof AuthenticatedMotoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/patrimonio': {
-      id: '/_authenticated/patrimonio'
-      path: '/patrimonio'
-      fullPath: '/patrimonio'
-      preLoaderRoute: typeof AuthenticatedPatrimonioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/receitas': {
-      id: '/_authenticated/receitas'
-      path: '/receitas'
-      fullPath: '/receitas'
-      preLoaderRoute: typeof AuthenticatedReceitasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/relatorios': {
-      id: '/_authenticated/relatorios'
-      path: '/relatorios'
-      fullPath: '/relatorios'
-      preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/viagens': {
-      id: '/_authenticated/viagens'
-      path: '/viagens'
-      fullPath: '/viagens'
-      preLoaderRoute: typeof AuthenticatedViagensRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/faturas/$cardId/$invoiceKey': {
-      id: '/_authenticated/faturas/$cardId/$invoiceKey'
-      path: '/faturas/$cardId/$invoiceKey'
-      fullPath: '/faturas/$cardId/$invoiceKey'
-      preLoaderRoute: typeof AuthenticatedFaturasCardIdInvoiceKeyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
-}
-
-const rootRouteChildren: RootRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCartoesRoute: AuthenticatedCartoesRoute,
   AuthenticatedCasaRoute: AuthenticatedCasaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
@@ -399,6 +437,14 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedFaturasCardIdInvoiceKeyRoute:
     AuthenticatedFaturasCardIdInvoiceKeyRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
